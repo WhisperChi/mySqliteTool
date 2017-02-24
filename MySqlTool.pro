@@ -2,7 +2,9 @@ TEMPLATE = app
 
 QT += qml quick widgets
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    SqlData.cpp \
+    sqlite3.c
 
 RESOURCES += qml.qrc
 
@@ -13,4 +15,5 @@ QML_IMPORT_PATH =
 include(deployment.pri)
 
 HEADERS += \
-    SqlData.h
+    SqlData.h \
+    sqlite3.h

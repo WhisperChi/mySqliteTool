@@ -19,9 +19,15 @@
 
 #include <QQmlContext>
 
+#include "SqlData.h"
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+
+    qmlRegisterType<SqlData>("SqlData", 1, 0, "SqlData");
+
+    SqlData data;
 
     QStringList dataList;
     dataList.append("DD");
@@ -34,6 +40,7 @@ int main(int argc, char *argv[])
 
     QQmlContext* ctx = engine.rootContext();
     ctx->setContextProperty("myModel",QVariant::fromValue(dataList));
+
 
     return app.exec();
 }

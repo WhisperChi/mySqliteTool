@@ -94,89 +94,32 @@ Rectangle{
 
     }
 
-    //具体单选框
-
 
     //具体单选框
-    RadioButton{
+    Item{
+        id:bts
+        anchors.top : notation.bottom
+        ListView{
+            id:typeBts
 
-        id:android;
-        text:"Android";
-        exclusiveGroup: mos;
-        anchors.top: notation.bottom;
-        anchors.topMargin: 4;
-        anchors.left: notation.left;
-        anchors.leftMargin: 20;
-        checked:  true;
-        focus: true;
-        activeFocusOnPress:  true;
-        style:radioStyle;
-        onClicked: resultHolder.visible = false;
+            anchors.top: notation.bottom
 
+            model:myModel
+            delegate:
+                RadioButton{
+                anchors.top: typeBts.top
+                text:modelData
+                style:radioStyle
+                exclusiveGroup: mos;
+                anchors.topMargin: 4;
+                anchors.left: notation.left;
+                anchors.leftMargin: 20;
+                checked:  true;
+                focus: false;
+                activeFocusOnPress:  true;
+            }
+        }
     }
-
-    RadioButton{
-
-        id: ios;
-        text:"IOS";
-        exclusiveGroup: mos;
-        anchors.top: android.bottom;
-        anchors.topMargin: 4;
-        anchors.left: notation.left;
-        activeFocusOnPress: true;
-        style:radioStyle;
-        onClicked: resultHolder.visible = false;
-
-
-    }
-
-
-
-    RadioButton{
-
-        id: wp;
-        text:"wp_phone";
-        exclusiveGroup: mos;
-        anchors.top: ios.bottom;
-        anchors.topMargin: 4;
-        anchors.left: notation.left;
-        activeFocusOnPress: true;
-        style:radioStyle;
-        onClicked: resultHolder.visible = false;
-
-
-    }
-
-    RadioButton{
-
-        id: firefox;
-        text:"firefox OS";
-        exclusiveGroup: mos;
-        anchors.top: wp.bottom;
-        anchors.topMargin: 4;
-        anchors.left: notation.left;
-        activeFocusOnPress: true;
-        style:radioStyle;
-        onClicked: resultHolder.visible = false;
-
-    }
-
-
-    RadioButton{
-
-        id: sailfish;
-        text:"sailfish OS";
-        exclusiveGroup: mos;
-        anchors.top: firefox.bottom;
-        anchors.topMargin: 4;
-        anchors.left: notation.left;
-        activeFocusOnPress: true;
-        style:radioStyle;
-        onClicked: resultHolder.visible = false;
-
-
-    }
-
 
 
     //提交按钮
@@ -184,7 +127,8 @@ Rectangle{
         id: confirm;
         text:"Confirm";
 
-        anchors.top: sailfish.bottom;
+
+
         anchors.topMargin: 4;
         anchors.left: notation.left;
 

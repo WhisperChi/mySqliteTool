@@ -48,9 +48,13 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = main.cpp qrc_qml.cpp \
+SOURCES       = main.cpp \
+		SqlData.cpp \
+		sqlite3.c qrc_qml.cpp \
 		moc_SqlData.cpp
 OBJECTS       = main.o \
+		SqlData.o \
+		sqlite3.o \
 		qrc_qml.o \
 		moc_SqlData.o
 DIST          = ../../Qt5.7.1/5.7/clang_64/mkspecs/features/spec_pre.prf \
@@ -215,7 +219,10 @@ DIST          = ../../Qt5.7.1/5.7/clang_64/mkspecs/features/spec_pre.prf \
 		../../Qt5.7.1/5.7/clang_64/mkspecs/features/exceptions.prf \
 		../../Qt5.7.1/5.7/clang_64/mkspecs/features/yacc.prf \
 		../../Qt5.7.1/5.7/clang_64/mkspecs/features/lex.prf \
-		MySqlTool.pro SqlData.h main.cpp
+		MySqlTool.pro SqlData.h \
+		sqlite3.h main.cpp \
+		SqlData.cpp \
+		sqlite3.c
 QMAKE_TARGET  = MySqlTool
 DESTDIR       = 
 TARGET        = MySqlTool.app/Contents/MacOS/MySqlTool
@@ -599,8 +606,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents qml.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents SqlData.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents SqlData.h sqlite3.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp SqlData.cpp sqlite3.c $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -639,6 +646,8 @@ compiler_moc_header_clean:
 	-$(DEL_FILE) moc_SqlData.cpp
 moc_SqlData.cpp: ../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/QObject \
 		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/qobject.h \
+		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/QString \
+		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/qstring.h \
 		SqlData.h \
 		../../Qt5.7.1/5.7/clang_64/bin/moc
 	/Users/whisperchi/Qt5.7.1/5.7/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -I/Users/whisperchi/Qt5.7.1/5.7/clang_64/mkspecs/macx-clang -I/Users/whisperchi/work/MySqlTool -I/Users/whisperchi/Qt5.7.1/5.7/clang_64/lib/QtQuick.framework/Headers -I/Users/whisperchi/Qt5.7.1/5.7/clang_64/lib/QtWidgets.framework/Headers -I/Users/whisperchi/Qt5.7.1/5.7/clang_64/lib/QtGui.framework/Headers -I/Users/whisperchi/Qt5.7.1/5.7/clang_64/lib/QtQml.framework/Headers -I/Users/whisperchi/Qt5.7.1/5.7/clang_64/lib/QtNetwork.framework/Headers -I/Users/whisperchi/Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/8.0.0/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/usr/include -F/Users/whisperchi/Qt5.7.1/5.7/clang_64/lib SqlData.h -o moc_SqlData.cpp
@@ -666,8 +675,28 @@ main.o: main.cpp ../../Qt5.7.1/5.7/clang_64/lib/QtWidgets.framework/Headers/QApp
 		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/QStringList \
 		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/qstringlist.h \
 		../../Qt5.7.1/5.7/clang_64/lib/QtQml.framework/Headers/QQmlContext \
-		../../Qt5.7.1/5.7/clang_64/lib/QtQml.framework/Headers/qqmlcontext.h
+		../../Qt5.7.1/5.7/clang_64/lib/QtQml.framework/Headers/qqmlcontext.h \
+		SqlData.h \
+		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/QObject \
+		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/qobject.h \
+		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/QString \
+		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/qstring.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
+
+SqlData.o: SqlData.cpp SqlData.h \
+		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/QObject \
+		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/qobject.h \
+		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/QString \
+		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/qstring.h \
+		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/QDir \
+		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/qdir.h \
+		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/QCoreApplication \
+		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/qcoreapplication.h \
+		sqlite3.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SqlData.o SqlData.cpp
+
+sqlite3.o: sqlite3.c 
+	$(CC) -c $(CFLAGS) $(INCPATH) -o sqlite3.o sqlite3.c
 
 qrc_qml.o: qrc_qml.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qml.o qrc_qml.cpp

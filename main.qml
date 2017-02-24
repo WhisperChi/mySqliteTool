@@ -1,9 +1,12 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
+import QtQuick.Controls.Styles 1.2
 
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.0
+
+import SqlData 1.0
 
 ApplicationWindow {
     visible: true
@@ -11,17 +14,12 @@ ApplicationWindow {
     height: 480
     title: qsTr("数据库录入程序")
 
-
     Item{
          id:menu
          anchors.fill:parent.fill
          width:parent.width
          height:parent.height
 
-         //TestCode
-        MyRadioButton{
-
-        }
 
 
        Item{
@@ -86,6 +84,7 @@ ApplicationWindow {
                             -type1
                             ...
                             -typen
+                        -submit
 
             */
                 id:modelUI
@@ -160,33 +159,79 @@ ApplicationWindow {
                             }
                         }
 
-                        //color:"red"  //Test
                     }
 
-                    Item{
+                    Rectangle{
                         id:sqlType
                         y:fileOpen.y + fileOpen.height + 2
-                        width:parent.width
-                        height: 100
+                        width:parent.width / 2
+                        height: modelUI.height
+
+                        color:"#d0d0d0"
 
                         ExclusiveGroup { id: tabPositionGroup }
                         ListView{
+                            id:radioBts
                             anchors.fill: parent
-                            model:myModel
+                            model: sql.types
 
                             delegate:
-                                      RowLayout {
-                                          RadioButton {
-                                              id: bottomButton
-                                              text: modelData
-                                              exclusiveGroup: tabPositionGroup
-                                              Layout.minimumWidth: 100
-                                          }
-                                      }
+                                RadioButton {
+                                    id: bottomButton
+
+                                    anchors.leftMargin: 20
+
+                                    text: modelData
+                                    style:radioStyle
+                                    exclusiveGroup: tabPositionGroup
+                                    Layout.minimumWidth: 100
+                                    checked: false
+                                    activeFocusOnPress: true
+                                }
 
                         }
 
+                    }
 
+                    Button{
+                        id:update
+                        text:"更新"
+                        anchors.top: sqlType.top
+                        anchors.topMargin: 20
+                        anchors.right: sqlType.right
+                        anchors.rightMargin: 80
+                        onClicked: {
+                            sql.update()
+                        }
+                    }
+
+                    Button{
+                        id:submit
+                        text:"提交"
+
+                        anchors.top: update.top
+                        anchors.topMargin: 20
+                        anchors.right: sqlType.right
+                        anchors.rightMargin: 80
+                        onClicked: {
+                            //console.log(tabPositionGroup.current.text)
+                            sql.update()
+                            sql.insert(fileText.text,tabPositionGroup.current.text)
+                            console.log(tabPositionGroup.current.text)
+                        }
+                    }
+                    Button{
+                        id:myPrint
+                        text:"打印"
+
+                        anchors.top: submit.top
+                        anchors.topMargin: 20
+                        anchors.right: sqlType.right
+                        anchors.rightMargin: 80
+
+                        onClicked: {
+                            sql.print()
+                        }
                     }
                 }
 
@@ -243,13 +288,20 @@ ApplicationWindow {
         nameFilters: [ "Image files (*.png *.jpg)", "All files (*)" ]
         selectedNameFilter: "All files (*)"
         //sidebarVisible: fileDialogSidebarVisible.checked
+
         onAccepted: {
             console.log("Accepted: " + fileUrls)
             //if (fileDialogOpenFiles.checked)
                 for (var i = 0; i < fileUrls.length; ++i)
                     console.log(fileUrls[i])
-                    console.log("current url :" + fileDialog.fileUrl)
-                    fileText.text = fileDialog.fileUrl
+
+                var path = fileDialog.fileUrl.toString();
+                        // remove prefixed "file:///"
+                        path = path.replace(/^(file:\/{2})/,"");
+                        // unescape html codes like '%23' for '#'
+                        var cPath = decodeURIComponent(path);
+                        fileText.text = cPath
+
                     //Qt.openUrlExternally(fileUrls[i])
         }
         onRejected: { console.log("Rejected") }
@@ -261,7 +313,70 @@ ApplicationWindow {
 
 
 
-    //! [ListView]
+    //! [ListVie]
 
+    //! [RadioButtonStyle]
+    // 单选框框风格组件
+    Component{
 
+        id: radioStyle;
+        RadioButtonStyle{
+
+            indicator: Rectangle{
+                implicitHeight: 12;
+                implicitWidth: 16;
+
+                radius: 6;
+                border.color: control.hovered? "darkblue":"gray";
+                border.width: 3;
+
+                Rectangle{
+                    anchors.fill: parent;
+                    visible: control.checked;
+                    color:"#0000a0";
+                    radius: 5;
+                    anchors.margins: 3;
+                }
+            }
+
+            label:Text{
+                color: control.activeFocus?"blue":"black";
+                text:control.text;
+            }
+        }
+    }
+    //! [RadioButtonStyle]
+
+    //结果提交的包围框和按钮
+    Rectangle{
+        id: resultHolder;
+        color:"#a0a0a0";
+        width: 200;
+        height: 60;
+        anchors.centerIn: parent;
+        visible: false;
+        z: 2;
+
+        opacity: 0.8;
+
+        border.width: 2;
+        border.color: "#808080";
+
+        Text{
+
+            id:result;
+            anchors.centerIn: parent;
+            font.pixelSize: 20;
+            color:"blue";
+            font.bold: true;
+        }
+    }
+
+    SqlData{
+        id:sql
+
+        onTypesChanged: {
+            radioBts.update()
+        }
+    }
 }
