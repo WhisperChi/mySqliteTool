@@ -19,9 +19,9 @@ ApplicationWindow {
          height:parent.height
 
          //TestCode
-         MyRadioButton{
+        MyRadioButton{
 
-         }
+        }
 
 
        Item{
@@ -168,6 +168,24 @@ ApplicationWindow {
                         y:fileOpen.y + fileOpen.height + 2
                         width:parent.width
                         height: 100
+
+                        ExclusiveGroup { id: tabPositionGroup }
+                        ListView{
+                            anchors.fill: parent
+                            model:myModel
+
+                            delegate:
+                                      RowLayout {
+                                          RadioButton {
+                                              id: bottomButton
+                                              text: modelData
+                                              exclusiveGroup: tabPositionGroup
+                                              Layout.minimumWidth: 100
+                                          }
+                                      }
+
+                        }
+
 
                     }
                 }
