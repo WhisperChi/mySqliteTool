@@ -54,11 +54,11 @@ ApplicationWindow {
                 anchors.verticalCenter: parent.verticalCenter
                 width:100
                 height:100
-                text:"分类"
+                text:"类型"
 
                 onClicked:{
                     typeUI.visible = true
-                     menu.visible = false
+                    menu.visible = false
                 }
             }
 
@@ -209,7 +209,7 @@ ApplicationWindow {
                         id:submit
                         text:"提交"
 
-                        anchors.top: update.top
+                        anchors.top: update.bottom
                         anchors.topMargin: 20
                         anchors.right: sqlType.right
                         anchors.rightMargin: 80
@@ -224,7 +224,7 @@ ApplicationWindow {
                         id:myPrint
                         text:"打印"
 
-                        anchors.top: submit.top
+                        anchors.top: submit.bottom
                         anchors.topMargin: 20
                         anchors.right: sqlType.right
                         anchors.rightMargin: 80
