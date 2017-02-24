@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>arrowLeft.png</file>
+        <file>MyRadioButton.qml</file>
+    </qresource>
+</RCC>
