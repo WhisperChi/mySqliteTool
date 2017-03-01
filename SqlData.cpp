@@ -235,6 +235,7 @@ void SqlData::print()
     sqlite3* db = NULL;
 
     //Todo:	这边发现相对路径有点问题
+    std::string dbPath = m_dbUrl.toStdString();
     int rc = sqlite3_open(dbPath.c_str(),&db);
 
     if(rc != 0)
