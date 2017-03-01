@@ -51,6 +51,12 @@ static int _callback_exec(void * notused,int argc, char ** argv, char ** aszColN
     return 0;
 }
 
+/// 将路径存入 table中
+/// \brief SqlData::sqlInsert
+/// \param path
+/// \param table
+/// \return
+///
 int SqlData::sqlInsert(std::string path,std::string table)
 {
     QFileInfo fileInfo(QString::fromLocal8Bit(path.c_str()));
@@ -61,13 +67,12 @@ int SqlData::sqlInsert(std::string path,std::string table)
     if(path == "" || fileName == "")
         return -3;
 
-
-
     //! [sqlite]
     sqlite3_stmt* stat;
     sqlite3* db = NULL;
 
-    int rc = sqlite3_open(m_sqlPath.toStdString().c_str(),&db);
+    std::string dbPath = m_dbUrl.toStdString();
+    int rc = sqlite3_open(dbPath.c_str(),&db);
 
     //Todo:	这边发现相对路径有点问题
     //int rc = sqlite3_open("/Users/whisperchi/work/MySqlTool/testData.sqlite3",&db);
@@ -77,7 +82,7 @@ int SqlData::sqlInsert(std::string path,std::string table)
         return -1;
     }
 
-    char* zErrmsg = 0;
+    char* zErrmsg = "0";
     std::string maxRowidCmd = "select MAX(rowid) from " + table;
     maxRowidCmd += ";";
 
@@ -206,7 +211,7 @@ QStringList SqlData::getTypes()
 /// \param path
 /// \param table
 ///
-void SqlData::insert(QString path, QString table)
+void SqlData::insert(const QString path, const QString table)
 {
     QString curPath = QDir::cleanPath(QCoreApplication::applicationDirPath());
     QString filePath = QDir::cleanPath(path);
@@ -226,18 +231,11 @@ void SqlData::insert(QString path, QString table)
 
 void SqlData::print()
 {
-    std::string path = QCoreApplication::applicationDirPath().toStdString();
-    std::cout << "func print() current path: " << path << std::endl;
-
-    std::string dbPath = path + "/testData.sqlite3";
-
     sqlite3_stmt* stat;
     sqlite3* db = NULL;
 
     //Todo:	这边发现相对路径有点问题
-
     int rc = sqlite3_open(dbPath.c_str(),&db);
-    //int rc = sqlite3_open("/Users/whisperchi/work/MySqlTool/testData.sqlite3",&db);
 
     if(rc != 0)
     {
@@ -300,12 +298,17 @@ void SqlData::print()
 
 SqlData::SqlData()
 {
+    m_curPath = QCoreApplication::applicationDirPath();
+
+    //Test Part
     m_types.append("DD");
     m_types.append("HJ");
-    m_types.append("LJ");
-    m_types.append("KJ");
+    //End test
 
-    m_sqlPath = "./testData.sqlite3";
+    m_dbUrl = "";
+    m_dbUrl = m_curPath + "/testData.sqlite3";
+    //update(); //更新表类型
+
 }
 
 SqlData::~SqlData()
@@ -319,11 +322,30 @@ QStringList SqlData::types() const
     return m_types;
 }
 
-///	读取数据库，读取modeltype表中typename这列，存入列表中
+QString SqlData::dbUrl() const
+{
+    return m_dbUrl;
+}
+
+void SqlData::setDbUrl(const QString url)
+{
+    m_dbUrl = url;
+    emit dbUrlChanged();
+}
+
+///	读取数据库，读取modeltype表中typename这列，去重后存入列表中
 /// \brief SqlData::update
 ///
 void SqlData::update()
 {
+    sqlite3* db = NULL;
+    sqlite3_stmt*	stat = NULL;
+
+//    int rc = sqlite3_open(m_)
+    //1.读取modeltype表
+    std::string sql = "select tablename from modeltype group by tablename;";
+
+
     std::cout << "update func\n";
     emit typesChanged();
 }

@@ -10,18 +10,22 @@ class SqlData : public QObject
 
     //Q_PROPERTY(QStringList types READ types WRITE setTypes NOTIFY typesChanged)
     Q_PROPERTY(QStringList types READ types NOTIFY typesChanged)
+    Q_PROPERTY(QString dbUrl READ dbUrl WRITE setDbUrl NOTIFY dbUrlChanged)
 
 public:
     Q_INVOKABLE QStringList getTypes();
-    Q_INVOKABLE void insert(QString path,QString table);
-    Q_INVOKABLE void print();
+    Q_INVOKABLE void insert(const QString path,const QString table);
+    Q_INVOKABLE void print()const;
 
 public:
     SqlData();
     ~SqlData();
 
-public:
     QStringList types()const;
+
+    QString dbUrl()const;
+
+    void setDbUrl(const QString url);
 
 public slots:
     void update();
@@ -29,14 +33,20 @@ public slots:
 
 signals:
     void typesChanged();
+    void dbUrlChanged();
+
+    void warning(const QString msg);
 
 private:
     int sqlInsert(std::string path,std::string table);
+    void print();
 
 
 private:
     QStringList		m_types;
-    QString			m_sqlPath;
+
+    QString			m_curPath;
+    QString 		m_dbUrl;
 
 
 };
