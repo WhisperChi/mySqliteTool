@@ -35,19 +35,19 @@ QT_MOC_LITERAL(2, 21, 0), // ""
 QT_MOC_LITERAL(3, 22, 12), // "dbUrlChanged"
 QT_MOC_LITERAL(4, 35, 7), // "warning"
 QT_MOC_LITERAL(5, 43, 3), // "msg"
-QT_MOC_LITERAL(6, 47, 6), // "update"
-QT_MOC_LITERAL(7, 54, 8), // "getTypes"
-QT_MOC_LITERAL(8, 63, 6), // "insert"
-QT_MOC_LITERAL(9, 70, 4), // "path"
-QT_MOC_LITERAL(10, 75, 5), // "table"
-QT_MOC_LITERAL(11, 81, 5), // "print"
+QT_MOC_LITERAL(6, 47, 8), // "getTypes"
+QT_MOC_LITERAL(7, 56, 6), // "insert"
+QT_MOC_LITERAL(8, 63, 4), // "path"
+QT_MOC_LITERAL(9, 68, 5), // "table"
+QT_MOC_LITERAL(10, 74, 5), // "print"
+QT_MOC_LITERAL(11, 80, 6), // "update"
 QT_MOC_LITERAL(12, 87, 5), // "types"
 QT_MOC_LITERAL(13, 93, 5) // "dbUrl"
 
     },
     "SqlData\0typesChanged\0\0dbUrlChanged\0"
-    "warning\0msg\0update\0getTypes\0insert\0"
-    "path\0table\0print\0types\0dbUrl"
+    "warning\0msg\0getTypes\0insert\0path\0table\0"
+    "print\0update\0types\0dbUrl"
 };
 #undef QT_MOC_LITERAL
 
@@ -69,12 +69,10 @@ static const uint qt_meta_data_SqlData[] = {
        3,    0,   50,    2, 0x06 /* Public */,
        4,    1,   51,    2, 0x06 /* Public */,
 
- // slots: name, argc, parameters, tag, flags
-       6,    0,   54,    2, 0x0a /* Public */,
-
  // methods: name, argc, parameters, tag, flags
-       7,    0,   55,    2, 0x02 /* Public */,
-       8,    2,   56,    2, 0x02 /* Public */,
+       6,    0,   54,    2, 0x02 /* Public */,
+       7,    2,   55,    2, 0x02 /* Public */,
+      10,    0,   60,    2, 0x02 /* Public */,
       11,    0,   61,    2, 0x02 /* Public */,
 
  // signals: parameters
@@ -82,12 +80,10 @@ static const uint qt_meta_data_SqlData[] = {
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,    5,
 
- // slots: parameters
-    QMetaType::Void,
-
  // methods: parameters
     QMetaType::QStringList,
-    QMetaType::Void, QMetaType::QString, QMetaType::QString,    9,   10,
+    QMetaType::Void, QMetaType::QString, QMetaType::QString,    8,    9,
+    QMetaType::Void,
     QMetaType::Void,
 
  // properties: name, type, flags
@@ -110,11 +106,11 @@ void SqlData::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         case 0: _t->typesChanged(); break;
         case 1: _t->dbUrlChanged(); break;
         case 2: _t->warning((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 3: _t->update(); break;
-        case 4: { QStringList _r = _t->getTypes();
+        case 3: { QStringList _r = _t->getTypes();
             if (_a[0]) *reinterpret_cast< QStringList*>(_a[0]) = _r; }  break;
-        case 5: _t->insert((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
-        case 6: _t->print(); break;
+        case 4: _t->insert((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 5: _t->print(); break;
+        case 6: _t->update(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {

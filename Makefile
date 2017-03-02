@@ -690,6 +690,8 @@ SqlData.o: SqlData.cpp SqlData.h \
 		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/qstring.h \
 		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/QDir \
 		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/qdir.h \
+		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/QFileInfo \
+		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/qfileinfo.h \
 		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/QCoreApplication \
 		../../Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/qcoreapplication.h \
 		sqlite3.h

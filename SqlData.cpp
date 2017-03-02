@@ -75,7 +75,6 @@ int SqlData::sqlInsert(std::string path,std::string table)
     int rc = sqlite3_open(dbPath.c_str(),&db);
 
     //Todo:	这边发现相对路径有点问题
-    //int rc = sqlite3_open("/Users/whisperchi/work/MySqlTool/testData.sqlite3",&db);
 
     if(rc != 0)
     {
@@ -195,7 +194,7 @@ int SqlData::sqlInsert(std::string path,std::string table)
 
     // 释放内存
     sqlite3_finalize(stat);
-     sqlite3_close(db);
+    sqlite3_close(db);
     //! [sqlite]
 
     return 0;
@@ -236,6 +235,7 @@ void SqlData::print()
 
     //Todo:	这边发现相对路径有点问题
     std::string dbPath = m_dbUrl.toStdString();
+    std::cout << "func print: " << dbPath << std::endl;
     int rc = sqlite3_open(dbPath.c_str(),&db);
 
     if(rc != 0)
@@ -339,15 +339,37 @@ void SqlData::setDbUrl(const QString url)
 ///
 void SqlData::update()
 {
+    //! [sqlite3]
+    sqlite3_stmt*	stat;
     sqlite3* db = NULL;
-    sqlite3_stmt*	stat = NULL;
 
-//    int rc = sqlite3_open(m_)
-    //1.读取modeltype表
+    //1. open
+    std::string dbPath = m_dbUrl.toStdString();
+    int rc = sqlite3_open(dbPath.c_str(),&db);
+    if(rc != 0)
+    {
+        std::cout << "fun update: db open failed\n";
+        //emit warning(QString("func update() db open failed"));
+        return ;
+    }
+
+    //2. read
     std::string sql = "select tablename from modeltype group by tablename;";
+    sqlite3_prepare(db,sql.c_str(),-1,&stat,0);
 
+    m_types.clear();
+    while(sqlite3_step(stat) == SQLITE_ROW)
+    {
+        char *tablename = (char*)sqlite3_column_blob(stat,0);
+        std::string tmp(tablename);
+        m_types.append(QString(tmp.c_str()));
+    }
 
-    std::cout << "update func\n";
+    //3. close
+    sqlite3_finalize(stat);
+    sqlite3_close(db);
+    //! [sqlite3]
+
     emit typesChanged();
 }
 

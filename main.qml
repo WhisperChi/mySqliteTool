@@ -215,7 +215,6 @@ ApplicationWindow {
                         anchors.rightMargin: 80
                         onClicked: {
                             //console.log(tabPositionGroup.current.text)
-                            sql.update()
                             sql.insert(fileText.text,tabPositionGroup.current.text)
                             console.log(tabPositionGroup.current.text)
                         }

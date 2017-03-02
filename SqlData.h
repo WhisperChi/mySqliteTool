@@ -16,6 +16,7 @@ public:
     Q_INVOKABLE QStringList getTypes();
     Q_INVOKABLE void insert(const QString path,const QString table);
     Q_INVOKABLE void print()const;
+    Q_INVOKABLE void update();
 
 public:
     SqlData();
@@ -27,8 +28,6 @@ public:
 
     void setDbUrl(const QString url);
 
-public slots:
-    void update();
 
 
 signals:
